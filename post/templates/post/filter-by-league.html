@@ -1,0 +1,17 @@
+{% extends 'post/base.html' %}
+{% block content %}
+<div style="float: right;">
+    {% for team in teams %}
+        <a href="{% url 'filter-by-team' team.id %}">
+            <img src="{{ team.image.url }}"/>
+        </a>
+    {% endfor %}
+</div>
+    {% for post in posts %}
+        <div class="w3-content w3-justify w3-text-grey w3-padding-64" id="about">
+            <a href="{% url 'show-detail' post.id %}"><h2 class="w3-text-light-grey">{{ post.title }}</h2></a>
+            <hr style="width:200px" class="w3-opacity bg-danger">
+            <p>{{ post.short_desc }}</p>
+        </div>
+    {% endfor %}
+{% endblock %}

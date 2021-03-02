@@ -1,0 +1,14 @@
+{% extends "post/base.html" %}
+{% block content %}
+    <div class="container text-center">
+        <form method="post">{% csrf_token %}
+            <p>ნამდვილად გსურთ წაშლა "{{ object }}"?</p>
+            <input type="submit" value="წაშლა" class="btn btn-danger w-100">
+        </form>
+        {% if object.post.id %}
+            <a class="btn btn-success w-100 mt-4" href="{% url 'show-detail' object.post.id %}">უკან დაბრუნება</a>
+        {% else %}
+            <a class="btn btn-success w-100 mt-4" href="{% url 'show-detail' object.id %}">უკან დაბრუნება</a>
+        {% endif %}
+    </div>
+{% endblock content %}

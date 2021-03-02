@@ -1,0 +1,37 @@
+{% extends 'post/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+    {% for same_post in same_posts %}
+        <div style="float: right;">
+            <a href="{% url 'show-detail' same_post.id %}"><h4 class="w3-text-light-grey">{{ same_post.title }}</h4></a>
+            <article>{{ same_post.short_desc }}</article>
+        </div>
+    {% endfor %}
+    <div class="w3-content w3-justify w3-text-grey w3-padding-64 text-center" id="about">
+        <h2 class="w3-text-light-grey">{{ post.title }}</h2>
+        <hr style="width:200px" class="w3-opacity bg-danger">
+        <p>{{ post.short_desc }}</p>
+        <article>{{ post.desc }}</article>
+        {% if user.id == post.user_id or user.is_superuser %}
+            <a href="{% url 'delete-post' post.id %}" class="btn btn-danger">პოსტის წაშლა</a>
+        {% endif %}
+        <hr>
+        <h2 class="w3-text-light-grey">კომენტარები</h2>
+        {% for comment in comments %}
+            <small>კომენტრის ავტორი {{ comment.user }} </small>
+            <img src="{{ comment.user.image.url }}" alt="image" class="w3-left w3-circle w3-margin-right">
+            <p>{{ comment.comment }}</p>
+            {% if user.id == comment.user_id or user.is_superuser %}
+                <a href="{% url 'delete-comment' comment.id %}" class="btn btn-danger w-100">წაშლა</a>
+            {% endif %}
+            <hr>
+        {% endfor %}
+        {% if user.is_authenticated %}
+            <form action="{% url 'comment' post.id %}" method="post" id="comment">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <button class="btn btn-info w-100 mt-4">კომენტარი</button>
+            </form>
+        {% endif %}
+    </div>
+{% endblock content %}

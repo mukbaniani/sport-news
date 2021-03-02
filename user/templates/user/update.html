@@ -1,0 +1,13 @@
+{% extends 'post/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="container text-center mt-4">
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <fieldset>
+                {{ form|crispy }}
+                <button class="btn btn-success w-100 mt-4">განახლება</button>
+            </fieldset>
+        </form>
+    </div>
+{% endblock content %}

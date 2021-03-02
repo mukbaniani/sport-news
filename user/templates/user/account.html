@@ -1,0 +1,22 @@
+{% extends 'post/base.html' %}
+{% block content %}
+    <div class="container text-center mt-4">
+        <h3>მომხმარებელი {{ user.username }} </h3>
+        <img src="{{ user.image.url }}" alt="image" class="w3-left w3-circle w3-margin-right">
+        <a href="{% url 'update-profile' user.id %}">პროფილის განახლება</a>
+        <p>პოსტის რაოდენობა {{ stat_info.posts }} </p>
+        <p>კომენტარების რაოდენობა {{ stat_info.comments }} </p>
+        <h2>პოსტები</h2>
+    </div>
+        {% for post in user.post_set.all %}
+            <div class="container text-center mt-4" id="about">
+                <p><a href="{% url 'show-detail' post.id %}"><span class="w3-large w3-margin-right">{{ post.title }}</span></a>
+                <span>ავტორი {{ post.user }} </span>
+                <p>{{ post.short_desc }}</p>
+                {% endfor %}
+                <h2>კომენტარები</h2>
+                {% for comment in user.comment_set.all %}
+                    <a href="{% url 'show-detail' comment.post.id %}"><p>{{ comment.comment }}</p></a>
+                {% endfor %}
+            </div>
+{% endblock %}

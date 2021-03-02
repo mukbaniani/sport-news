@@ -1,0 +1,42 @@
+{% extends 'post/base.html' %}
+{% block content %}
+    {% for post in posts %}
+        <div class="w3-content w3-justify w3-text-grey w3-padding-64" id="about">
+            <img src="{{ post.image.url }}" alt="image">
+            <p><a href="{% url 'show-detail' post.id %}"><span class="w3-large w3-margin-right">{{ post.title }}</span></a>
+            <span>ავტორი {{ post.user }} </span>
+            <p>{{ post.short_desc }}</p>
+        </div>
+    {% endfor %}
+    {% if page_obj.has_other_pages %}
+    <ul class="pagination justify-content-center mb-4 mt-4">
+        {% if page_obj.has_previous %}
+          <li class="page-item">
+            <a class='page-link' href='?page=1'>პირველი</a>
+          </li>
+          <li class="page-item">
+            <a class='page-link' href='?page={{ page_obj.previous_page_number }}'>&laquo;</a>
+          </li>
+        {% endif %}
+        {% for num in page_obj.paginator.page_range %}
+            {% if page_obj.number == num %}
+            <li class="page-item disabled">
+                <a class='page-link' href='?page={{ num }}'>{{ num }}</a>
+            </li>
+            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+            <li class="page-item">
+                <a class='page-link' href='?page={{ num }}'>{{ num }}</a>
+            </li>
+            {% endif %}
+        {% endfor %}
+        {% if page_obj.has_next %}
+            <li class="page-item">
+            <a class='page-link' href='?page={{ page_obj.next_page_number }}'>&raquo;</a>
+            </li>
+            <li class="page-item">
+            <a class='page-link' href='?page={{ page_obj.paginator.num_pages }}'>ბოლო</a>
+            </li>
+        {% endif %}
+    </ul>
+    {% endif %}
+{% endblock %}
