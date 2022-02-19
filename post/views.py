@@ -1,14 +1,10 @@
 from django.urls.base import reverse
 from .forms import CommentForm
-from django.views.generic import ListView, DetailView, CreateView, DeleteView
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.views.generic import DetailView, CreateView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Post, Comment, Team
+from .utils import MainPostView, MainDelete
 
-class MainPostView(ListView):
-    model = Post
-    context_object_name = "posts"
-    paginate_by = 2
-    ordering = ['-id']
 
 
 class PostListView(MainPostView):
@@ -71,14 +67,6 @@ class CreatePost(LoginRequiredMixin, CreateView):
         if self.request.user.is_superuser:
             form.instance.see_home_page = True
         return super().form_valid(form)
-
-
-class MainDelete(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
-    template_name = "post/delete.html"
-
-    def test_func(self):
-        object = self.get_object()
-        return object.user == self.request.user or self.request.user.is_superuser
 
 
 class DeleteComment(MainDelete):
